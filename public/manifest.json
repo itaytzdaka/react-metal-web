@@ -1,0 +1,16 @@
+{
+    "short_name" : "Metal",
+    "name" : "Metal App PWA",
+    "icons" : [
+        {
+            "src" : "./images/Metal-logo.svg",
+            "type" : "image/png",
+            "sizes" : "1024x1024",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url" : ".",
+    "display" : "standalone",
+    "theme_color" : "#000000",
+    "background_color" : "#ffffff"
+}
