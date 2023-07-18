@@ -52,7 +52,7 @@
     margin: auto;
   }
   
-  .menu .submenu-content {
+  .menu .submenu {
     display: none;
     position: absolute;
     flex-direction: column;
@@ -63,7 +63,7 @@
     border: 4px solid rgb(255, 255, 255);
   }
   
-  .menu .submenu:hover .submenu-content {
+  .menu>li:hover .submenu {
     display: flex;
   }
   

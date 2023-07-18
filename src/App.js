@@ -78,14 +78,14 @@ function App() {
   ];
 
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [activeItem, setActiveItem] = useState(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
   const handleMouseEnter = (index) => {
-    setActiveItem(index);
+    setHoveredItem(index);
   };
 
   const handleMouseLeave = () => {
-    setActiveItem(null);
+    setHoveredItem(null);
   };
 
   useEffect(() => {
@@ -117,69 +117,44 @@ function App() {
   return (
     <div className="App">
       <aside>
+
         <nav>
           <ul className='menu'>
             {menu.map((menuItem, index) => (
-              <li key={index} className="submenu">
-                <StyledMenuButton>{menuItem.title}</StyledMenuButton>
+              <li
+                key={index}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <StyledMenuButton className={hoveredItem === index ? 'active' : ''}>{menuItem.title}</StyledMenuButton>
+
                 {menuItem.subMenu.length > 0 && (
-                  <ul className="submenu-content">
+                  <ul className="submenu">
                     {menuItem.subMenu.map((subMenuItem, subIndex) => (
                       <li key={subIndex}><StyledSubMenuButton>{subMenuItem}</StyledSubMenuButton></li>
                     ))}
                   </ul>
                 )}
+                
               </li>
             ))}
           </ul>
-          {/* <ul className="menu">
-              <li key='submenu1' className= {activeItem === 1 ? 'submenu active' : 'submenu'}  onMouseEnter={() => handleMouseEnter(1)}
-                onMouseLeave={handleMouseLeave}>
-                <StyledMenuButton>כרטסות</StyledMenuButton>
-                <ul className="submenu-content">
-                  <li><StyledSubMenuButton>כרטסת פריטים/מלאי.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>כרטסת קודי עבודה.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>מחירונים.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>כרטיסי הכנסות.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton onClick={"openModalWindow('../kartasot/kartasot.html','kartasot',600,600)"}>כרטסת לקוחות/ספקים.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>כרטיסי קניות/הוצאות.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>כרטיסי בנק.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>כרטיסי קופה.</StyledSubMenuButton></li>
-                  <li><StyledSubMenuButton>כרטיסי מערכת.</StyledSubMenuButton></li>
-                </ul>
-              </li>
-              <li className="submenu">
-                <StyledMenuButton>מסמכים</StyledMenuButton>
-                <ul className="submenu-content">
-                  <li><StyledSubMenuButton href="#">חשבונית מס.</StyledSubMenuButton></li>
-                </ul>
-              </li>
-              <li><StyledMenuButton>קופה</StyledMenuButton></li>
-              <li><StyledMenuButton>העתקים</StyledMenuButton></li>
-              <li><StyledMenuButton>טופס מורכב</StyledMenuButton></li>
-              <li><StyledMenuButton>דוחות</StyledMenuButton></li>
-              <li><StyledMenuButton>הנהלת חשבונות</StyledMenuButton></li>
-              <li><StyledMenuButton>טבלאות</StyledMenuButton></li>
-              <li><StyledMenuButton>עיבוד תמלילים</StyledMenuButton></li>
-              <li><StyledMenuButton>שאילתות</StyledMenuButton></li>
-              <li><StyledMenuButton>תצוגה גרפית</StyledMenuButton></li>
-              <li><StyledMenuButton>התאמות</StyledMenuButton></li>
-              <li className="li-space"><StyledMenuButton>תחזוקת מערכת</StyledMenuButton></li>
-              <li><StyledMenuButton id="closeStyledMenuButton">יציאה</StyledMenuButton></li>
-            </ul> */}
         </nav>
+
       </aside>
       <main>
+
         <header>
           <span id="dateAndTime"> {renderMessage()}</span>
         </header>
+
         <section>
           <div className="right"></div>
           <div className="left">
-
             <Clock></Clock>
           </div>
         </section>
+
         <footer>
           <nav>
             <ul className="options-menu">
@@ -194,6 +169,7 @@ function App() {
             </ul>
           </nav>
         </footer>
+
       </main>
     </div>
   );

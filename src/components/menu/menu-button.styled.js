@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const StyledMenuButton = styled.button`
   display: flex;
@@ -14,14 +14,11 @@ export const StyledMenuButton = styled.button`
   margin: 0 auto;
   border: 1px solid var(--button-background-color);
 
-  &:hover {
+  &:hover ,
+  &.active {
     background-color: var(--button-background-hover-color);
     color: var(--button-text-hover-color);
     border: 1px solid var(--button-text-hover-color);
   }
 
-  .submenu.active>a{
-    background-color: #ff0909;
-    border: 1px solid #ff0909;
-  }
 `
