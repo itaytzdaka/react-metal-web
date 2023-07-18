@@ -3,7 +3,8 @@ import Clock from './components/clock/clock';
 import { StyledMenuButton } from './components/menu/menu-button.styled';
 import { StyledSubMenuButton } from './components/menu/sub-menu-button.styled';
 import React, { useState, useEffect } from 'react';
-
+import FullScreenButton from './components/nav/full-screen-button';
+import CloseWindowButton from './components/menu/close-window-button';
 
 function App() {
   const menu = [
@@ -70,11 +71,7 @@ function App() {
     {
       title: 'תחזוקת מערכת',
       subMenu: []
-    },
-    {
-      title: 'יציאה',
-      subMenu: []
-    },
+    }
   ];
 
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -121,6 +118,7 @@ function App() {
         <nav>
           <ul className='menu'>
             {menu.map((menuItem, index) => (
+
               <li
                 key={index}
                 onMouseEnter={() => handleMouseEnter(index)}
@@ -135,9 +133,11 @@ function App() {
                     ))}
                   </ul>
                 )}
-                
+
               </li>
+
             ))}
+            <li><CloseWindowButton></CloseWindowButton></li>
           </ul>
         </nav>
 
@@ -158,7 +158,7 @@ function App() {
         <footer>
           <nav>
             <ul className="options-menu">
-              <li><button id="fullscreenStyledMenuButton">מסך מלא</button></li>
+              <li><FullScreenButton></FullScreenButton></li>
               <li>גיבוי</li>
               <li>צבע</li>
               <li>מערכת</li>
