@@ -17,6 +17,4 @@ export const StyledSubMenuButton = styled.button`
     border-left: 1px solid #f2f2f2;
   }
 
-
-
 `
