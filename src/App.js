@@ -5,85 +5,12 @@ import { StyledSubMenuButton } from './components/menu/sub-menu-button.styled';
 import React, { useState, useEffect } from 'react';
 import FullScreenButton from './components/nav/full-screen-button';
 import CloseWindowButton from './components/menu/close-window-button';
+import Menu from './components/menu/menu';
 
 function App() {
-  const menu = [
-    {
-      title: 'כרטסות',
-      subMenu: [
-        'כרטסת פריטים/מלאי.',
-        'כרטסת קודי עבודה.',
-        'מחירונים.',
-        'כרטיסי הכנסות.',
-        'כרטסת לקוחות/ספקים.',
-        'כרטיסי קניות/הוצאות.',
-        'כרטיסי בנק.',
-        'כרטיסי קופה.',
-        'כרטיסי מערכת.'
-      ]
-    },
-    {
-      title: 'מסמכים',
-      subMenu: [
-        'חשבונית מס.'
-      ]
-    },
-    {
-      title: 'קופה',
-      subMenu: []
-    },
-    {
-      title: 'העתקים',
-      subMenu: []
-    },
-    {
-      title: 'טופס מורכב',
-      subMenu: []
-    },
-    {
-      title: 'דוחות',
-      subMenu: []
-    },
-    {
-      title: 'הנהלת חשבונות',
-      subMenu: []
-    },
-    {
-      title: 'טבלאות',
-      subMenu: []
-    },
-    {
-      title: 'עיבוד תמלילים',
-      subMenu: []
-    },
-    {
-      title: 'שאילתות',
-      subMenu: []
-    },
-    {
-      title: 'תצוגה גרפית',
-      subMenu: []
-    },
-    {
-      title: 'התאמות',
-      subMenu: []
-    },
-    {
-      title: 'תחזוקת מערכת',
-      subMenu: []
-    }
-  ];
+  
 
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [hoveredItem, setHoveredItem] = useState(null);
-
-  const handleMouseEnter = (index) => {
-    setHoveredItem(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredItem(null);
-  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -114,33 +41,7 @@ function App() {
   return (
     <div className="App">
       <aside>
-
-        <nav>
-          <ul className='menu'>
-            {menu.map((menuItem, index) => (
-
-              <li
-                key={index}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <StyledMenuButton className={hoveredItem === index ? 'active' : ''}>{menuItem.title}</StyledMenuButton>
-
-                {menuItem.subMenu.length > 0 && (
-                  <ul className="submenu">
-                    {menuItem.subMenu.map((subMenuItem, subIndex) => (
-                      <li key={subIndex}><StyledSubMenuButton>{subMenuItem}</StyledSubMenuButton></li>
-                    ))}
-                  </ul>
-                )}
-
-              </li>
-
-            ))}
-            <li><CloseWindowButton></CloseWindowButton></li>
-          </ul>
-        </nav>
-
+        <Menu></Menu>
       </aside>
       <main>
 

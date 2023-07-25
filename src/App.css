@@ -24,49 +24,6 @@
     padding: 10px;
   }
   
-  nav {
-    height: 100%;
-    border-left: 1px solid gray;
-  }
-  
-  nav ul {
-    list-style: none;
-  }
-  
-  .menu {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 15px;
-    gap: 10px;
-    justify-content: space-between;
-  }
-  
-  .menu li {
-    position: relative;
-  }
-  
-  .li-space {
-    display: flex;
-    margin: auto;
-  }
-  
-  .menu .submenu {
-    display: none;
-    position: absolute;
-    flex-direction: column;
-    width: 500px;
-    top: 0;
-    right: 170px;
-    background-color: #ffffff;
-    border: 4px solid rgb(255, 255, 255);
-  }
-  
-  .menu>li:hover .submenu {
-    display: flex;
-  }
-  
   section {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -81,8 +38,10 @@
     float: left;
     display: flex;
     gap: 15px;
-    padding: 10px 20px;
+    padding: 0 20px;
     border: 1px solid gray;
+    height: 100%;
+    align-items: center;
   }
   
   button{
