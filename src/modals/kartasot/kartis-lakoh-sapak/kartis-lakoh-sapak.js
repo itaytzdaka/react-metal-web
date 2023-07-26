@@ -17,7 +17,7 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 
-const KartisLakohSapak = () => {
+const KartisLakohSapak = ({onRequestClose}) => {
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -30,11 +30,13 @@ const KartisLakohSapak = () => {
         setIsOpen(false);
     }
 
-
+    const exit = ()=>{
+        onRequestClose();
+    }
 
     return (
         <div className="modal">
-
+            <button onClick={exit}>close</button>
             <button onClick={openModal}>Open Modal</button>
             <Modal
                 isOpen={modalIsOpen}
