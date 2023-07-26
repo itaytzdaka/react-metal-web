@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyledMenuButton } from './menu-button.styled';
-import { StyledSubMenuButton } from './sub-menu-button.styled';
+import { StyledMenuButton } from './styled/menu-button.styled';
+import { StyledSubMenuButton } from './styled/sub-menu-button.styled';
 import CloseWindowButton from './close-window-button';
 import './menu.css';
 
@@ -170,58 +170,64 @@ const Menu = () => {
     };
 
     useEffect(() => {
-        // Function to calculate the position of the sub-menu
-        const calculateSubMenuPosition = (menuItemIndex) => {
-            const menuItems = document.querySelectorAll('.menu>li');
-            console.log("menuItems: ", menuItems)
-            const subMenu = menuItems[menuItemIndex].querySelector('.submenu');
-            console.log("subMenu: ", subMenu)
+        const calculateSubMenuPositions = () => {
+            const menuLiItems = document.querySelectorAll('.menu>li');
 
-            if (subMenu) {
-                const menuItemRect = menuItems[menuItemIndex].getBoundingClientRect();
-                console.log("menuItemRect:", menuItemRect);
-                const subMenuRect = subMenu.getBoundingClientRect();
-                console.log("subMenuRect:", subMenuRect);
-                const bodyHeight = document.body.clientHeight;
-                console.log("bodyHeight:", bodyHeight);
+            menuLiItems.forEach(li => {
+                const subMenu = li.querySelector('.submenu');
+                // console.log("subMenu", subMenu);
 
-                const originalYPosition=menuItemRect.top + window.pageYOffset;
-                const subMenuHeight = subMenuRect.height;
+                if (subMenu) {
+                    const menuLiRect = li.getBoundingClientRect();
 
+                    subMenu.style.display = 'flex';
+                    const subMenuRect = subMenu.getBoundingClientRect();
+                    subMenu.style = '';
 
-                console.log("originalYPosition:", originalYPosition);
-                console.log("subMenuHeight:", subMenuRect.height);
+                    const bodyHeight = document.body.clientHeight;
 
-                // Calculate the ideal top position of the sub-menu
-                let topPosition = 0;
-                
-                if ((originalYPosition + subMenuHeight) > bodyHeight) {
-                    // If the sub-menu goes beyond the window height, adjust the top position
-                    topPosition =  bodyHeight - (subMenuHeight + originalYPosition) ;
+                    const originalYPosition = menuLiRect.top + window.scrollY;
 
-                    if(bodyHeight<subMenuHeight){
-                        topPosition = -subMenuHeight;
+                    const subMenuHeight = subMenuRect.height;
+
+                    let topPosition = 0;
+
+                    if ((originalYPosition + subMenuHeight) > bodyHeight) {
+                        // If the sub-menu goes beyond the window height, adjust the top position
+                        topPosition = (subMenuHeight + originalYPosition) - bodyHeight;
+
+                        console.log("-topPosition",-topPosition);
+                        console.log("subMenuHeight",subMenuHeight);
+
+                        if(topPosition>subMenuHeight-70){
+                            topPosition=topPosition-(topPosition-subMenuHeight-70);
+                        }
+
+                        // Set the position of the sub-menu
+                        subMenu.style.top = -topPosition - 5 + 'px';
+                        console.log("-pos", topPosition);
                     }
 
-                    
-
-                    // Set the position of the sub-menu
-                    subMenu.style.top = topPosition-5 +'px';
-                    console.log("-pos",topPosition);
-                    
-
                 }
-
-
-            }
+            });
         };
 
-        if (hoveredItem !== null) {
-            calculateSubMenuPosition(hoveredItem);
-        }
-    }, [hoveredItem]);
+        calculateSubMenuPositions();
 
+        const handleResize = () => {
+            // Code to run when the window is resized
+            calculateSubMenuPositions();
+        };
+        
+        window.addEventListener('resize', handleResize);
 
+        return () => {
+            window.removeEventListener('resize', handleResize);
+          };
+
+    }, []);
+
+  
 
     return (
         <nav>

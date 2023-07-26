@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledSubMenuButton = styled.button`
   display: block;
-  height: 50px;
+  height: 40px;
   text-decoration: none;
   color: black;
   padding: 15px 2px;

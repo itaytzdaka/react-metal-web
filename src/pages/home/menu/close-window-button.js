@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledMenuButton } from './menu-button.styled';
+import { StyledMenuButton } from './styled/menu-button.styled';
 
 const CloseWindowButton = () => {
   const handleCloseWindow = () => {
