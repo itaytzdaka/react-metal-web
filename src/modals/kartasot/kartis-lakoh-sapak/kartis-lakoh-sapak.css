@@ -1,3 +1,22 @@
-/* .modal{
-    color: black;
-} */
+.Kartis-Lakoh-Sapak{
+    direction: rtl;
+    width: 60vw;
+    color: blue;
+    font-weight: bolder;
+}
+
+.inputs{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+input{
+    height: 30px;
+    border: 1.5px solid blue;
+    margin: 0 5px;
+}
+
+.options{
+    background-color: aquamarine;
+}
