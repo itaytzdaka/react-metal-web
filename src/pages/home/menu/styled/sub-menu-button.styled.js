@@ -8,6 +8,9 @@ export const StyledSubMenuButton = styled.button`
   padding: 15px 2px;
   width: 100%;
   text-align: right;
+  border: none;
+  background: none;
+  cursor: pointer;
 
   &:hover {
     background-color: #eeeeee;

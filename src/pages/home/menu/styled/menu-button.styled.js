@@ -13,7 +13,8 @@ export const StyledMenuButton = styled.button`
   text-decoration: none;
   margin: 0 auto;
   border: 1px solid var(--button-background-color);
-
+  cursor: pointer;
+  
   &:hover ,
   &.active {
     background-color: var(--button-background-hover-color);

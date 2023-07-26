@@ -1,0 +1,29 @@
+  
+  .Nav button{
+    border: none;
+    background: none;
+    color: white;
+    background-color: #0011ff;
+    cursor: pointer;
+  }
+
+  .options-menu {
+    float: left;
+    display: flex;
+    gap: 15px;
+    padding: 0 20px;
+    border: 1px solid gray;
+    height: 100%;
+    align-items: center;
+  }
+
+  
+  .options-menu li {
+    color: white;
+    background-color: #0011ff;
+    font-size: 0.8em;
+    height: 25px;
+    padding: 5px 10px 0 10px;
+    cursor: pointer;
+    border: none;
+  }

@@ -3,8 +3,35 @@ import { StyledMenuButton } from './styled/menu-button.styled';
 import { StyledSubMenuButton } from './styled/sub-menu-button.styled';
 import CloseWindowButton from './close-window-button';
 import './menu.css';
+import Modal from 'react-modal';
+import KartisLakohSapak from '../../../modals/kartasot/kartis-lakoh-sapak/kartis-lakoh-sapak';
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
+
+Modal.setAppElement('#root');
 
 const Menu = () => {
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
 
     const menu = [
         {
@@ -244,7 +271,7 @@ const Menu = () => {
                         {menuItem.subMenu.length > 0 && (
                             <ul className="submenu">
                                 {menuItem.subMenu.map((subMenuItem, subIndex) => (
-                                    <li key={subIndex}><StyledSubMenuButton>{subMenuItem}</StyledSubMenuButton></li>
+                                    <li key={subIndex} onClick={openModal}><StyledSubMenuButton>{subMenuItem}</StyledSubMenuButton></li>
                                 ))}
                             </ul>
                         )}
@@ -254,7 +281,15 @@ const Menu = () => {
                 ))}
                 <li><CloseWindowButton></CloseWindowButton></li>
             </ul>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+            >
+                <KartisLakohSapak onRequestClose={closeModal}></KartisLakohSapak>
+            </Modal>
         </nav>
+        
     );
 };
 
