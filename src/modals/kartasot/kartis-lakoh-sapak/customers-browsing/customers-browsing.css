@@ -1,0 +1,40 @@
+.customers-browsing{
+    direction: rtl;
+}
+
+/* CSS for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 14px;
+  }
+
+  th,td{
+    min-width: 100px;
+    padding: 10px;
+
+  }
+  
+  /* Table header */
+  thead th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: right;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  /* Table rows */
+  tbody td {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  /* Alternating row background color for better readability */
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Hover effect on rows */
+  tbody tr:hover {
+    background-color: #e6e6e6;
+  }

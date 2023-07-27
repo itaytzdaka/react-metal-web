@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import SecondModal from './second-modal';
+import React, { useEffect, useState } from 'react';
+import CustomerBrowsing from './customers-browsing/customers-browsing';
 import Modal from 'react-modal';
 import './kartis-lakoh-sapak.css';
+import api from '../../../api/axios';
 
 const customStyles = {
     content: {
@@ -20,21 +21,7 @@ Modal.setAppElement('#root');
 const KartisLakohSapak = ({ onRequestClose }) => {
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-    }
-
-
-    function closeModal() {
-        setIsOpen(false);
-    }
-
-    const exit = () => {
-        onRequestClose();
-    }
-
-
+    const [customers, setCustomers] = useState([]);
     const [formData, setFormData] = useState({
         customerNumber: '',
         accountName: '',
@@ -56,6 +43,29 @@ const KartisLakohSapak = ({ onRequestClose }) => {
         email: '',
         site: '',
     });
+    const [kartisIndex, setKartisIndex] = useState(-1);
+
+
+    useEffect(() => {
+        // Fetch the customers data when the component mounts
+
+
+        const getAllCustomers = async () => {
+            try {
+                // Make a GET request to the API endpoint that provides the customers data
+                const response = await api.get('/customers'); // Replace '/api/customers' with your actual API endpoint
+                setCustomers(response.data); // Update the state with the fetched customers data
+                console.log(response.data);
+                setKartisIndex(response.data?.length);
+
+            } catch (error) {
+                console.error('Error fetching customers:', error);
+            }
+        }
+
+        getAllCustomers();
+
+    }, []);
 
     // Handler for input changes
     const handleInputChange = (event) => {
@@ -67,11 +77,110 @@ const KartisLakohSapak = ({ onRequestClose }) => {
     };
 
     // Handler for form submission
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Do something with the form data, e.g., send it to a server or process it.
-        console.log(formData);
+
+        try {
+
+            // Check if the customer already exists based on some unique identifier (e.g., customerNumber or businessNumber)
+
+
+            if (formData._id) {
+                const response = await api.put(`/customers/${formData._id}`, formData);
+                console.log(response);
+
+                setCustomers((prevCustomers) =>
+                    prevCustomers.map((customer) => (customer._id === formData._id ? formData : customer))
+                );
+
+                setKartisIndex(customers.length);
+
+
+                console.log("put response.data: ", response.data);
+            }
+
+            else {
+                const response = await api.post('/customers', formData);
+                console.log(response);
+
+                setKartisIndex(customers.length + 1);
+
+                setCustomers((prevCustomers) => [...prevCustomers, response.data]);
+
+                console.log("post response.data: ", response.data);
+
+
+            }
+
+
+            setFormData({
+                customerNumber: '',
+                accountName: '',
+                sortCode: '',
+                vat: '',
+                businessNumber: '',
+                type: '',
+                city: '',
+                address: '',
+                postalCode: '',
+                mobilePhone: '',
+                phone: '',
+                fax: '',
+                contact: '',
+                balance: '',
+                creditCard: '',
+                creditCardExpirationDate: '',
+                details: '',
+                email: '',
+                site: '',
+            });
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
     };
+
+    const previeusCustomer = () => {
+        if (kartisIndex > 0) {
+            setKartisIndex(prevVal => prevVal - 1);
+            setFormData(customers[kartisIndex - 1]);
+        }
+
+        else {
+            alert('אין עוד כרטיסי לקוח');
+        }
+
+
+
+    }
+
+    const nextCustomer = () => {
+
+        if (kartisIndex < customers.length - 1) {
+            setKartisIndex(prevVal => prevVal + 1);
+            setFormData(customers[kartisIndex + 1]);
+        }
+
+        else {
+            alert('אין עוד כרטיסי לקוח');
+        }
+
+    }
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+    const exit = () => {
+        onRequestClose();
+    }
 
     return (
         <div className="Kartis-Lakoh-Sapak">
@@ -86,11 +195,13 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="customerNumber"
                             name="customerNumber"
-                            value={formData.customerNumber}
+                            value={formData?.customerNumber}
                             onChange={handleInputChange}
                             required
                         />
                     </div>
+
+                    <button type="button" onClick={openModal}>חלון דפדוף</button>
 
                     <div>
                         <label htmlFor="accountName">שם חשבון</label>
@@ -98,7 +209,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="accountName"
                             name="accountName"
-                            value={formData.accountName}
+                            value={formData?.accountName}
                             onChange={handleInputChange}
                             required
                         />
@@ -110,7 +221,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="sortCode"
                             name="sortCode"
-                            value={formData.sortCode}
+                            value={formData?.sortCode}
                             onChange={handleInputChange}
                             required
                         />
@@ -122,7 +233,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="vat"
                             name="vat"
-                            value={formData.vat}
+                            value={formData?.vat}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -133,7 +244,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="businessNumber"
                             name="businessNumber"
-                            value={formData.businessNumber}
+                            value={formData?.businessNumber}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -144,7 +255,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="type"
                             name="type"
-                            value={formData.type}
+                            value={formData?.type}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -154,7 +265,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="city"
                             name="city"
-                            value={formData.city}
+                            value={formData?.city}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -165,7 +276,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="address"
                             name="address"
-                            value={formData.address}
+                            value={formData?.address}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -176,7 +287,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="postalCode"
                             name="postalCode"
-                            value={formData.postalCode}
+                            value={formData?.postalCode}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -187,7 +298,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="mobilePhone"
                             name="mobilePhone"
-                            value={formData.mobilePhone}
+                            value={formData?.mobilePhone}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -198,7 +309,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="phone"
                             name="phone"
-                            value={formData.phone}
+                            value={formData?.phone}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -209,7 +320,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="fax"
                             name="fax"
-                            value={formData.fax}
+                            value={formData?.fax}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -220,7 +331,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="contact"
                             name="contact"
-                            value={formData.contact}
+                            value={formData?.contact}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -231,7 +342,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="balance"
                             name="balance"
-                            value={formData.balance}
+                            value={formData?.balance}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -242,7 +353,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="creditCard"
                             name="creditCard"
-                            value={formData.creditCard}
+                            value={formData?.creditCard}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -253,7 +364,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="text"
                             id="creditCardExpirationDate"
                             name="creditCardExpirationDate"
-                            value={formData.creditCardExpirationDate}
+                            value={formData?.creditCardExpirationDate}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -263,7 +374,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                         <input
                             id="details"
                             name="details"
-                            value={formData.details}
+                            value={formData?.details}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -274,7 +385,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="email"
                             id="email"
                             name="email"
-                            value={formData.email}
+                            value={formData?.email}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -285,7 +396,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                             type="url"
                             id="site"
                             name="site"
-                            value={formData.site}
+                            value={formData?.site}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -293,16 +404,34 @@ const KartisLakohSapak = ({ onRequestClose }) => {
 
 
                 <div className='options'>
-                    <button type="submit">אישור</button>
-                    <button onClick={exit}>יציאה</button>
-                    <button onClick={openModal}>Open Modal</button>
+                    <div className='top'>
+
+                        <button type="button" onClick={previeusCustomer}>&rarr;</button>
+                        <button type="button" onClick={nextCustomer}>&larr;</button>
+                        <button type="button" onClick={openModal}>היסטוריה</button>
+                        <button type="button" onClick={openModal}>מידע</button>
+                        <button type="button" onClick={openModal}>מחק</button>
+
+                    </div>
+                    <div className='bottom'>
+                        <div className='right'>
+                            <button type="submit" disabled={!document.forms[0]?.checkValidity()}>אישור</button>
+                            <button type="button" onClick={exit}>יציאה</button>
+                        </div>
+                        <div className='left'>
+                            <button type="button" onClick={openModal}>תנועות</button>
+                            <button type="button" onClick={openModal}>דף</button>
+                            <button type="button" onClick={openModal}>התחבר</button>
+                            <button type="button" onClick={openModal}>המלצה</button>
+                            <button type="button" onClick={openModal}>מחירון</button>
+                            <button type="button" onClick={openModal}>מסמכים</button>
+                        </div>
+
+                    </div>
+
                 </div>
 
             </form>
-
-
-
-
 
 
             <Modal
@@ -310,7 +439,7 @@ const KartisLakohSapak = ({ onRequestClose }) => {
                 onRequestClose={closeModal}
                 style={customStyles}
             >
-                <SecondModal onRequestClose={closeModal}></SecondModal>
+                <CustomerBrowsing onRequestClose={closeModal} customersData={customers}></CustomerBrowsing>
             </Modal>
 
         </div>
